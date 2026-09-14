@@ -61,7 +61,17 @@ def boolean_not(term, inverted_index, all_doc_ids):
     return all_doc_ids - get_postings(term, inverted_index)
 
 # ---------------------------------------------------
-# Step 5: Run the System
+# Step 5: Print Query Results
+# ---------------------------------------------------
+def print_result(query_label, doc_ids):
+    print("QUERY:", query_label)
+    print("Result:")
+    for doc_id in sorted(doc_ids):
+        print(f"doc{doc_id}: {documents[doc_id]}")
+    print()
+
+# ---------------------------------------------------
+# Step 6: Run the System
 # ---------------------------------------------------
 if __name__ == "__main__":
     dictionary, inverted_index = build_index(documents)
@@ -84,3 +94,10 @@ if __name__ == "__main__":
     print("compiled OR interpreted ->", boolean_or("compiled", "interpreted", inverted_index))
     print("programming AND NOT web ->", get_postings("programming", inverted_index) & boolean_not("web", inverted_index, all_doc_ids))
     print("NOT web ->", boolean_not("web", inverted_index, all_doc_ids))
+
+    print("\nFormatted Query Results:")
+    print_result("python", get_postings("python", inverted_index))
+    print_result("web AND development", boolean_and("web", "development", inverted_index))
+    print_result("compiled OR interpreted", boolean_or("compiled", "interpreted", inverted_index))
+    print_result("programming AND NOT web", get_postings("programming", inverted_index) & boolean_not("web", inverted_index, all_doc_ids))
+    print_result("NOT web", boolean_not("web", inverted_index, all_doc_ids))
